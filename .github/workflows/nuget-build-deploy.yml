@@ -40,7 +40,7 @@ jobs:
       # uses: tanaka-takayoshi/nuget-publish-to-github-packages-action@462b6006e5c90f732d030b0ace2c3e7ee9d550bc
       uses: tanaka-takayoshi/nuget-publish-to-github-packages-action@v2.1
       with:
-        nupkg-path:  './artifacts/*.nupkg'
+        nupkg-path:  'package/*.nupkg'
         repo-owner:  'lukaskuko9'
         gh-user:  'lukaskuko9'
         token:  ${{ secrets.GITHUB_TOKEN }}
