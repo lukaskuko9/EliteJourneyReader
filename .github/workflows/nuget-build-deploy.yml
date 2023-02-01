@@ -1,15 +1,9 @@
 name: nuget-build-deploy
 on:
   push:
-    branches: [ main, nuget ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'unused atm'     
-        required: true
-        default: 'warning'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -41,5 +35,12 @@ jobs:
     - name: Package nuget
       run: dotnet pack EliteEventReader.sln --configuration release -o:package /p:PackageVersion=${{ steps.gitversion.outputs.AssemblySemVer }}
 
-    - name: Push generated package to GitHub registry
-      run: dotnet nuget push ./package/*.nupkg  --source https://nuget.pkg.github.com/lukaskuko9/index.json   --api-key ${{ github.token }}
+    - name: Push Nupkg to GitHub Packages
+      # You may pin to the exact commit or the version.
+      # uses: tanaka-takayoshi/nuget-publish-to-github-packages-action@462b6006e5c90f732d030b0ace2c3e7ee9d550bc
+      uses: tanaka-takayoshi/nuget-publish-to-github-packages-action@v2.1
+      with:
+        nupkg-path:  './artifacts/*.nupkg'
+        repo-owner:  'lukaskuko9'
+        gh-user:  'lukaskuko9'
+        token:  ${{ secrets.GITHUB_TOKEN }}
