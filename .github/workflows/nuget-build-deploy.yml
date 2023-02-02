@@ -38,4 +38,4 @@ jobs:
     - name: Publish Nuget to GitHub registry
       run: dotnet nuget push package/*.nupkg -k ${GITHUB_TOKEN} -s https://nuget.pkg.github.com/lukaskuko9/index.json --skip-duplicate --no-symbols 
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
