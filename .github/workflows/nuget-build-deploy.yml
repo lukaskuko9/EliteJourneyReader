@@ -43,7 +43,7 @@ jobs:
       with:
         nupkg-path:  'package/*.nupkg'
         repo-owner:  'lukaskuko9/EliteJourneyReader'
-        gh-user:  'lukaskuko9'
+        gh-user:  'lukaskuko9/EliteJourneyReader'
         token:  ${{secrets.NUGET_DEPLOY_TOKEN}}
 
    # - name: Push generated package to GitHub registry
