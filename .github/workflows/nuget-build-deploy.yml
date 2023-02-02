@@ -47,4 +47,4 @@ jobs:
    #     token:  ${{secrets.NUGET_DEPLOY_TOKEN}}
 
     - name: Push generated package to GitHub registry
-      run: dotnet nuget push ./package/*.nupkg -s "https://nuget.pkg.github.com/lukaskuko9/EliteJourneyReader/index.json" --api-key ${{secrets.NUGET_DEPLOY_TOKEN}}
+      run: dotnet nuget push ./package/*.nupkg -s "https://nuget.pkg.github.com/lukaskuko9/EliteJourneyReader/index.json" --api-key ${{secrets.GITHUB_TOKEN}}
