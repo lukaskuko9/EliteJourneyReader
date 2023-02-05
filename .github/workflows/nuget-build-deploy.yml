@@ -1,5 +1,9 @@
 name: nuget-build-deploy
 on:
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Test scenario tags'
   push:
     branches: [ main,nuget ]
   pull_request:
