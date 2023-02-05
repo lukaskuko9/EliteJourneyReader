@@ -42,9 +42,11 @@ jobs:
       uses: tanaka-takayoshi/nuget-publish-to-github-packages-action@v2.1
       with:
         nupkg-path:  'package/*.nupkg'
-        repo-owner:  'lukaskuko9/EliteJourneyReader'
-        gh-user:  'lukaskuko9/EliteJourneyReader'
+        repo-owner:  'lukaskuko9'
+        gh-user:  'lukaskuko9'
         token:  ${{secrets.NUGET_DEPLOY_TOKEN}}
 
    # - name: Push generated package to GitHub registry
-   #   run: dotnet nuget push ./package/*.nupkg -s "https://nuget.pkg.github.com/lukaskuko9/EliteJourneyReader/index.json" --api-key ${{secrets.GITHUB_TOKEN}}
+   #   run: dotnet nuget push ./package/*.nupkg -s $NUGET_SOURCE --api-key ${{secrets.NUGET_DEPLOY_TOKEN}}
+   #   env:
+   #     NUGET_SOURCE: "https://nuget.pkg.github.com/lukaskuko9/index.json"
