@@ -1,36 +1,28 @@
 ﻿using System.Runtime.Serialization;
-using EliteJourneyReader.Journey.EventMessages;
+using EliteJourneyReader.Public.EventMessages;
 using Newtonsoft.Json;
 
-namespace EliteJourneyReader.Journey.Mediator;
+namespace EliteJourneyReader.Public.JourneyReader;
 
 public class JourneyEventMediator
 {
     private DateTimeOffset LastEventTime { get; set; } = DateTimeOffset.MinValue;
-    private int _startIndex = 0;
+    private int _startIndex;
     private string _lastJson = string.Empty;
-    
-    private static readonly Dictionary<string, Type> TypesDictionary = new()
-    {
-        { "Friends", typeof(FriendsEventMessage) },
-        { "FileHeader", typeof(FileHeaderEventMessage) },
-        { "LoadGame", typeof(LoadGameEventMessage) },
-        { "MarketBuy", typeof(MarketBuyEventMessage) },
-        { "MarketSell", typeof(MarketSellEventMessage) }
-    };
-    
+
     public JourneyEventMediator()
     {
 
     }
 
-    public IEnumerable<(JourneyEventMessage?, string)> ProcessMessages(string[] events)
+    internal IEnumerable<(JourneyEventMessage?, string)> ProcessMessages(string[] events,
+        Dictionary<string, Type> typesDictionary)
     {
         var newEvents = events[_startIndex..];
-        JourneyEventMessage? eventMessage = null;
-        string msgJson = string.Empty;
+        var msgJson = string.Empty;
         foreach (var eventJson in newEvents)
         {
+            JourneyEventMessage? eventMessage = null;
             try
             {
                 var msgBase = JsonConvert.DeserializeObject<JourneyEventMessage>(eventJson);
@@ -44,17 +36,19 @@ public class JourneyEventMediator
                 LastEventTime = msgBase.Timestamp;
                 _startIndex = events.Length;
                 _lastJson = eventJson;
-                var eventType = TypesDictionary[msgBase.EventType];
-                eventMessage = (JourneyEventMessage)JsonConvert.DeserializeObject(eventJson, eventType)!;
+                typesDictionary.TryGetValue(msgBase.EventType, out var eventType);
+
+                if (eventType is not null)
+                    eventMessage = (JourneyEventMessage) JsonConvert.DeserializeObject(eventJson, eventType)!;
+                else
+                    eventMessage = msgBase;
             }
             catch (Exception e)
             {
-                // ignored
+                eventMessage = new ErrorMessage(eventJson, e);
             }
-
+            
             yield return (eventMessage, msgJson);
         }
     }
-
-
 }
