@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: Environment
+    environment: Production
     steps:
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0.9.7
@@ -39,6 +39,9 @@ jobs:
       
     - name: Package nuget
       run: dotnet pack EliteEventReader.sln --configuration release -o:package /p:PackageVersion=${{ steps.gitversion.outputs.AssemblySemVer }}
+      
+    - name: Push nuget to Nuget.Org
+      run: dotnet nuget push package/*.nupkg --api-key ${{secrets.NUGET_ORG_PUBLISH_KEY}} --source https://api.nuget.org/v3/index.json
 
     - name: Push Nupkg to GitHub Packages
           # You may pin to the exact commit or the version.
@@ -48,7 +51,7 @@ jobs:
         nupkg-path:  'package/*.nupkg'
         repo-owner:  'lukaskuko9'
         gh-user:  'lukaskuko9'
-        token:  ${{secrets.NUGET_DEPLOY_TOKEN}}
+        token:  ${{secrets.NUGET_GITHUB_TOKEN}}
 
    # - name: Push generated package to GitHub registry
    #   run: dotnet nuget push ./package/*.nupkg -s $NUGET_SOURCE --api-key ${{secrets.NUGET_DEPLOY_TOKEN}}
