@@ -5,7 +5,7 @@ on:
       tags:
         description: 'Test scenario tags'
   push:
-    branches: [ main,nuget ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 jobs:
