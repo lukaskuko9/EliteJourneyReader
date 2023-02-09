@@ -6,8 +6,6 @@ on:
         description: 'Test scenario tags'
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 jobs:
   build:
     runs-on: ubuntu-latest
