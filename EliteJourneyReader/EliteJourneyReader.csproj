@@ -3,6 +3,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <WarningsAsErrors>Nullable</WarningsAsErrors>
         <PackageId>EliteJourneyReader</PackageId>
         <Authors>Lukaskuko</Authors>
         <PackageDescription>Library for triggering in-game events of Elite Dangerous</PackageDescription>
