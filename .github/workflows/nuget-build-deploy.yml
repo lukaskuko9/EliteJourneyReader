@@ -5,7 +5,7 @@ on:
       tags:
         description: 'Test scenario tags'
   push:
-    branches: [ main ]
+    branches: [ master ]
 jobs:
   build:
     runs-on: ubuntu-latest
