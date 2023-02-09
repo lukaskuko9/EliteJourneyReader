@@ -20,7 +20,7 @@ namespace WpfSampleApp.Windows
         {
             _eliteJourneyReader = eliteJourneyReader;
             _testOptions = testOptions.Value;
-            viewModel = new MainWindowViewModel(_testOptions.Header);
+            viewModel = new MainWindowViewModel(_testOptions.Title);
             
             InitializeComponent();
 

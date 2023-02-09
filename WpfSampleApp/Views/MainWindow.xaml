@@ -13,10 +13,14 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <controls:LogList Header="InGame Messages:" Items="{Binding InGameMessages}"/> 
-        <GridSplitter Grid.Row="1" Margin="2,0,2,0"
-                      Height="3" Background="Chocolate" 
+        <GridSplitter Grid.Row="1" Margin="0,5,0,5" ResizeDirection="Rows"
+                      BorderBrush="AliceBlue" 
+                      BorderThickness="2"
+                      Background="Gray" 
+                      Height="5" 
+                      MinWidth="150" 
                       VerticalAlignment="Stretch" 
-                      HorizontalAlignment="Stretch" />
+                      HorizontalAlignment="Center" />
         <controls:LogList Grid.Row="2" Header="Error Messages:" Items="{Binding ErrorMessages}"/> 
         </Grid>
 </Window>

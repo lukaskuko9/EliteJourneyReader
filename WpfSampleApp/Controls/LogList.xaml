@@ -6,37 +6,14 @@
              xmlns:local="clr-namespace:WpfSampleApp.Controls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <DockPanel >
-        <TextBlock DockPanel.Dock="Top" Text="{Binding Header}"/>
-        <DataGrid DockPanel.Dock="Bottom" ItemsSource="{Binding Path=Items}" AutoGenerateColumns="False" x:Name="DockPanel" >
-            <DataGrid.Resources >
-                <DataTemplate DataType="{x:Type local:LogMessage}">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Stretch">
-                        <TextBlock Text="{Binding Path=Event}" MinHeight="50" MinWidth="50" />
-                        <TextBlock Text="{Binding Path=Time}" MinHeight="50" MinWidth="50" />
-                        <TextBlock Text="{Binding Path=Json}" MinHeight="50" MinWidth="50" />
-                    </StackPanel>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type local:LogErrorMessage}">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch">
-                        <TextBlock Text="{Binding Path=Exception}" MinWidth="50" />
-                        <TextBlock Text="{Binding Path=Json}" MinWidth="50" />
-                    </StackPanel>
-                </DataTemplate>
-                <Style TargetType="{x:Type DataGridCell}">
-                    <Setter Property="BorderBrush" Value="Green" />
-                    <Setter Property="BorderThickness" Value="2" />
-                    <Setter Property="ContentTemplate">
-                        <Setter.Value>
-                            <DataTemplate>
-                                <ContentControl Content="{Binding}" />
-                            </DataTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </DataGrid.Resources>
+    <DockPanel x:Name="DockPanel">
+        <TextBlock DockPanel.Dock="Top" Padding="5,0,0,0" Text="{Binding Header}"/>
+        <DataGrid DockPanel.Dock="Bottom" ItemsSource="{Binding Path=Items}" IsReadOnly="true">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Copy" Command="Copy"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
     </DockPanel>     
 </UserControl>
