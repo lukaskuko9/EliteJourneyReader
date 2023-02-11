@@ -1,34 +1,31 @@
 ﻿using System.Text;
 
 namespace EliteJourneyReader.Public.JourneyReader;
-
 public class JourneyFileReader
 {
-    private readonly JourneyEventMediator _mediator;
+    private readonly JourneyEventProcessor _processor;
     private static string JourneyDirectoryPath => Environment.ExpandEnvironmentVariables(RawDirectoryPath);
     private const string RawDirectoryPath = "%userprofile%\\Saved Games\\Frontier Developments\\Elite Dangerous\\";
     private FileSystemWatcher FileSystemWatcher { get; }
 
-    public JourneyFileReader(JourneyEventMediator mediator)
+    public JourneyFileReader(JourneyEventProcessor processor)
     {
-        _mediator = mediator;
+        _processor = processor;
         FileSystemWatcher = new FileSystemWatcher(JourneyDirectoryPath);
         FileSystemWatcher.EnableRaisingEvents = true;
         FileSystemWatcher.Filter = "*.log";
         FileSystemWatcher.Created += WatcherOnCreated;
         FileSystemWatcher.Changed += WatcherOnChanged;
     }
-    private EliteJourneyReader.CallEventDelegate? _callEventDelegate;
-    private Dictionary<string, Type> _typesDictionary { get; set; } = new();
-    internal void Register(EliteJourneyReader.CallEventDelegate callEventDelegate, Dictionary<string, Type> typesDictionary)
+    private EliteJourneyProvider.CallEventDelegate? _callEventDelegate;
+    internal void Register(EliteJourneyProvider.CallEventDelegate callEventDelegate)
     {
         _callEventDelegate = callEventDelegate;
-        _typesDictionary = typesDictionary;
     }
     private void WatcherOnChanged(object sender, FileSystemEventArgs e)
     {
         var events = ReadLines(e.FullPath).ToArray();
-        foreach (var eventMessage in _mediator.ProcessMessages(events, _typesDictionary))
+        foreach (var eventMessage in _processor.ProcessMessages(events))
         {
             var (msg, json) = eventMessage;
             _callEventDelegate?.Invoke(msg, json);
@@ -38,7 +35,7 @@ public class JourneyFileReader
     private void WatcherOnCreated(object sender, FileSystemEventArgs e)
     {
         var events = ReadLines(e.FullPath).ToArray();
-        foreach (var eventMessage in _mediator.ProcessMessages(events, _typesDictionary))
+        foreach (var eventMessage in _processor.ProcessMessages(events))
         {
             var (msg, json) = eventMessage;
             _callEventDelegate?.Invoke(msg, json);

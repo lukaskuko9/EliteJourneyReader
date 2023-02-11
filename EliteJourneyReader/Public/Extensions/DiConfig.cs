@@ -8,7 +8,8 @@ public static class DiConfig
     public static void ConfigureJourneyReader(this IServiceCollection services)
     {
         services.AddSingleton<JourneyFileReader>();
-        services.AddTransient<JourneyEventMediator>();
-        services.AddSingleton<EliteJourneyReader>();
+        services.AddTransient<JourneyEventProcessor>();
+        services.AddTransient<IProcessorConfig, ProcessorConfig>();
+        services.AddSingleton<EliteJourneyProvider>();
     }
 }
