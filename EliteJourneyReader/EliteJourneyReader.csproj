@@ -11,12 +11,13 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <LangVersion>10</LangVersion>
+        <PackageProjectUrl>https://github.com/lukaskuko9/EliteJourneyReader</PackageProjectUrl>
     </PropertyGroup>
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-      <None Include="README.md" Pack="true" PackagePath="\"/>
-      <None Include="LICENSE" Pack="true" PackagePath="\"/>
+      <None Include="README.md" Pack="true" PackagePath="\" />
+      <None Include="LICENSE" Pack="true" PackagePath="\" />
     </ItemGroup>
 </Project>
