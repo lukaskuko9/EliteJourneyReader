@@ -11,6 +11,9 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <LangVersion>10</LangVersion>
+        <PackageReleaseNotes>
+            0.1.8 Added option to change journal directory
+        </PackageReleaseNotes>
         <PackageProjectUrl>https://github.com/lukaskuko9/EliteJourneyReader</PackageProjectUrl>
     </PropertyGroup>
     <ItemGroup>
