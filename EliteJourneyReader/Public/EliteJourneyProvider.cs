@@ -7,7 +7,7 @@ namespace EliteJourneyReader.Public;
 
 public class EliteJourneyProvider
 {
-    private readonly IProcessorConfig _processorConfig;
+    private readonly JourneyFileReader _fileReader;
 
     public delegate void JourneyEventDelegate<in TMessage>(TMessage message) where TMessage : JourneyEventMessage;
     public delegate void JourneyEventDelegate(JourneyEventMessage? message, string jsonMessage);
@@ -22,7 +22,11 @@ public class EliteJourneyProvider
     public event JourneyEventDelegate<FileHeaderEventMessage>? OnFileHeader;
     public event JourneyEventDelegate<MarketBuyEventMessage>? OnMarketBuy;
     public event JourneyEventDelegate<MarketSellEventMessage>? OnMarketSell;
-    
+
+    public void SetJournalDirectoryPath(string path)
+    {
+        _fileReader.SetNewJournalDirectoryPath(path);
+    }
     private List<Delegate?> _delegates =>
         new()
         {
@@ -32,7 +36,7 @@ public class EliteJourneyProvider
     
     public EliteJourneyProvider(JourneyFileReader fileReader, IProcessorConfig processorConfig)
     {
-        _processorConfig = processorConfig;
+        _fileReader = fileReader;
         fileReader.Register(OnNewEventRead);
     }
 

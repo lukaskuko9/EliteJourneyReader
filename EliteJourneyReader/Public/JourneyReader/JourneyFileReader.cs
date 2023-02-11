@@ -4,12 +4,25 @@ namespace EliteJourneyReader.Public.JourneyReader;
 public class JourneyFileReader
 {
     private readonly JourneyEventProcessor _processor;
-    private static string JourneyDirectoryPath => Environment.ExpandEnvironmentVariables(RawDirectoryPath);
-    private const string RawDirectoryPath = "%userprofile%\\Saved Games\\Frontier Developments\\Elite Dangerous\\";
+    internal string JourneyDirectoryPath { get; set; } = string.Empty;
+    
+    private string DefaultDirectoryPath => Environment.ExpandEnvironmentVariables(RawDefaultDirectoryPath);
+    private string RawDefaultDirectoryPath = "%userprofile%\\Saved Games\\Frontier Developments\\Elite Dangerous\\";
     private FileSystemWatcher FileSystemWatcher { get; }
+
+    internal void SetNewJournalDirectoryPath(string path)
+    {
+        if (Directory.Exists(path) == false)
+            throw new DirectoryNotFoundException($"Path provided to journal directory does not exist! " +
+                                                 $"Directory path: {path}");
+        
+        JourneyDirectoryPath = path;
+        FileSystemWatcher.Path = path;
+    }
 
     public JourneyFileReader(JourneyEventProcessor processor)
     {
+        JourneyDirectoryPath = DefaultDirectoryPath;
         _processor = processor;
         FileSystemWatcher = new FileSystemWatcher(JourneyDirectoryPath);
         FileSystemWatcher.EnableRaisingEvents = true;
