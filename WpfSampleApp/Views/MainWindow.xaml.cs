@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using EliteJourneyReader.Public;
 using EliteJourneyReader.Public.EventMessages;
 using Microsoft.Extensions.Options;
 using WpfSampleApp.Options;
@@ -12,24 +13,30 @@ namespace WpfSampleApp.Windows
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly EliteJourneyReader.Public.EliteJourneyReader _eliteJourneyReader;
+        private readonly EliteJourneyReader.Public.EliteJourneyProvider _eliteJourneyProvider;
         private readonly TestOptions _testOptions;
         private readonly MainWindowViewModel viewModel;
         
-        public MainWindow(EliteJourneyReader.Public.EliteJourneyReader eliteJourneyReader, IOptions<TestOptions> testOptions)
+        public MainWindow(EliteJourneyReader.Public.EliteJourneyProvider eliteJourneyProvider, IOptions<TestOptions> testOptions)
         {
-            _eliteJourneyReader = eliteJourneyReader;
+            _eliteJourneyProvider = eliteJourneyProvider;
             _testOptions = testOptions.Value;
             viewModel = new MainWindowViewModel(_testOptions.Title);
             
             InitializeComponent();
 
-            _eliteJourneyReader.OnAnyEvent += EliteJourneyReaderOnAnyEvent;
-            _eliteJourneyReader.OnReaderError += EliteJourneyReaderOnOnReaderError;
+            _eliteJourneyProvider.OnAnyEvent += EliteJourneyProviderOnAnyEvent;
+            _eliteJourneyProvider.OnFriendsChange += EliteJourneyProviderOnOnFriendsChange;
+            _eliteJourneyProvider.OnReaderError += EliteJourneyProviderOnOnProviderError;
             DataContext = viewModel;
         }
 
-        private void EliteJourneyReaderOnOnReaderError(ErrorMessage message)
+        private void EliteJourneyProviderOnOnFriendsChange(FriendsEventMessage message)
+        {
+            Console.WriteLine();
+        }
+
+        private void EliteJourneyProviderOnOnProviderError(ErrorMessage message)
         {
             Dispatcher.Invoke(() =>
             {
@@ -37,7 +44,7 @@ namespace WpfSampleApp.Windows
             });
         }
 
-        private void EliteJourneyReaderOnAnyEvent(JourneyEventMessage? message, string jsonMessage)
+        private void EliteJourneyProviderOnAnyEvent(JourneyEventMessage? message, string jsonMessage)
         {
             Dispatcher.Invoke(() =>
             {
