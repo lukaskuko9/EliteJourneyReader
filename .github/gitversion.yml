@@ -1,7 +1,4 @@
-mode: Mainline
-branches:
-  feature:
-    tag: beta
-  main: {}
+mode: ContinuousDelivery
+next-version: 0.2
 ignore:
   sha: []
