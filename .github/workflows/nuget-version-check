@@ -1,0 +1,23 @@
+name: nuget-build-deploy
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: Test
+    steps:
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+          versionSpec: '5.x'
+    - name: Check out Code 
+      uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
+
+    - name: Determine Version
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.7
+      with:
+          useConfigFile: true
+          configFilePath: ./.github/gitversion.yml  
