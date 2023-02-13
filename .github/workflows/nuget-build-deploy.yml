@@ -5,7 +5,7 @@ on:
       tags:
         description: 'Test scenario tags'
   push:
-    branches: [ master, version-test]
+    branches: [ master ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -37,3 +37,21 @@ jobs:
       
     - name: Package nuget
       run: dotnet pack EliteEventReader.sln --configuration release -o:package /p:PackageVersion=${{ steps.gitversion.outputs.AssemblySemVer }}
+      
+    - name: Push nuget to Nuget.Org
+      run: dotnet nuget push package/*.nupkg --api-key ${{secrets.NUGET_ORG_PUBLISH_KEY}} --source https://api.nuget.org/v3/index.json
+
+    - name: Push Nupkg to GitHub Packages
+          # You may pin to the exact commit or the version.
+          # uses: tanaka-takayoshi/nuget-publish-to-github-packages-action@462b6006e5c90f732d030b0ace2c3e7ee9d550bc
+      uses: tanaka-takayoshi/nuget-publish-to-github-packages-action@v2.1
+      with:
+        nupkg-path:  'package/*.nupkg'
+        repo-owner:  'lukaskuko9'
+        gh-user:  'lukaskuko9'
+        token:  ${{secrets.NUGET_GITHUB_TOKEN}}
+
+   # - name: Push generated package to GitHub registry
+   #   run: dotnet nuget push ./package/*.nupkg -s $NUGET_SOURCE --api-key ${{secrets.NUGET_DEPLOY_TOKEN}}
+   #   env:
+   #     NUGET_SOURCE: "https://nuget.pkg.github.com/lukaskuko9/index.json"
