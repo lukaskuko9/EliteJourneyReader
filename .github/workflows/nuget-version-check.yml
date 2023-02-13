@@ -1,4 +1,4 @@
-name: nuget-build-deploy
+name: nuget-version-check
 on:
   workflow_dispatch:
 jobs:
