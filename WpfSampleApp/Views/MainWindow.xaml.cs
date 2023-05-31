@@ -6,18 +6,18 @@ using Microsoft.Extensions.Options;
 using WpfSampleApp.Options;
 using WpfSampleApp.ViewModels;
 
-namespace WpfSampleApp.Windows
+namespace WpfSampleApp.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly EliteJourneyReader.Public.EliteJourneyProvider _eliteJourneyProvider;
+        private readonly EliteJourneyProvider _eliteJourneyProvider;
         private readonly TestOptions _testOptions;
         private readonly MainWindowViewModel viewModel;
         
-        public MainWindow(EliteJourneyReader.Public.EliteJourneyProvider eliteJourneyProvider, IOptions<TestOptions> testOptions)
+        public MainWindow(EliteJourneyProvider eliteJourneyProvider, IOptions<TestOptions> testOptions)
         {
             _eliteJourneyProvider = eliteJourneyProvider;
             _testOptions = testOptions.Value;
@@ -27,21 +27,12 @@ namespace WpfSampleApp.Windows
 
             _eliteJourneyProvider.OnAnyEvent += EliteJourneyProviderOnAnyEvent;
             _eliteJourneyProvider.OnFriendsChange += EliteJourneyProviderOnOnFriendsChange;
-            _eliteJourneyProvider.OnReaderError += EliteJourneyProviderOnOnProviderError;
             DataContext = viewModel;
         }
 
-        private void EliteJourneyProviderOnOnFriendsChange(FriendsEventMessage message)
+        private void EliteJourneyProviderOnOnFriendsChange(object? sender, FriendsEventMessage? message)
         {
             Console.WriteLine();
-        }
-
-        private void EliteJourneyProviderOnOnProviderError(ErrorMessage message)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                viewModel.AddErrorMessage(message);
-            });
         }
 
         private void EliteJourneyProviderOnAnyEvent(JourneyEventMessage? message, string jsonMessage)

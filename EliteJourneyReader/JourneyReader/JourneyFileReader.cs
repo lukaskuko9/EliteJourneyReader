@@ -1,10 +1,12 @@
 ﻿using System.Text;
+using EliteJourneyReader.Public;
 
-namespace EliteJourneyReader.Public.JourneyReader;
-public class JourneyFileReader
+namespace EliteJourneyReader.JourneyReader;
+internal class JourneyFileReader
 {
+    internal static JourneyFileReader Instance = default!;
     private readonly JourneyEventProcessor _processor;
-    internal string JourneyDirectoryPath { get; set; } = string.Empty;
+    internal string JourneyDirectoryPath { get; set; }
     
     private string DefaultDirectoryPath => Environment.ExpandEnvironmentVariables(RawDefaultDirectoryPath);
     private string RawDefaultDirectoryPath = "%userprofile%\\Saved Games\\Frontier Developments\\Elite Dangerous\\";
@@ -20,6 +22,11 @@ public class JourneyFileReader
         FileSystemWatcher.Path = path;
     }
 
+    internal static void SetInstance(JourneyFileReader reader)
+    {
+        Instance = reader;
+    }
+    
     public JourneyFileReader(JourneyEventProcessor processor)
     {
         JourneyDirectoryPath = DefaultDirectoryPath;
@@ -34,6 +41,11 @@ public class JourneyFileReader
     internal void Register(EliteJourneyProvider.CallEventDelegate callEventDelegate)
     {
         _callEventDelegate = callEventDelegate;
+    }   
+    
+    internal void Unregister()
+    {
+        _callEventDelegate = null;
     }
     private void WatcherOnChanged(object sender, FileSystemEventArgs e)
     {

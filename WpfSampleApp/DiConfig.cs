@@ -3,7 +3,7 @@ using EliteJourneyReader.Public.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WpfSampleApp.Options;
-using WpfSampleApp.Windows;
+using WpfSampleApp.Views;
 
 namespace WpfSampleApp;
 

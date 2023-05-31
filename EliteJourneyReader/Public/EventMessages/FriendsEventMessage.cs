@@ -9,4 +9,6 @@ public sealed class FriendsEventMessage : JourneyEventMessage
     
     [JsonProperty("name")]
     public string FriendName { get; set; } = string.Empty;
+
+    public override string EventTypeName => "Friends";
 }

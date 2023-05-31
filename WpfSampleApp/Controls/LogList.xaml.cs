@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using WpfSampleApp.Windows;
 
 namespace WpfSampleApp.Controls;
 

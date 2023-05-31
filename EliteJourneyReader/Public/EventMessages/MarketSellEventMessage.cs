@@ -7,4 +7,5 @@ public sealed class MarketSellEventMessage : JourneyEventMessage
     public ulong SellPrice { get; set; }
     public ulong TotalSale { get; set; }
     public ulong AvgPricePaid { get; set; }
+    public override string EventTypeName => "MarketSell";
 }

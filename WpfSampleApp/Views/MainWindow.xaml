@@ -1,4 +1,4 @@
-﻿<Window x:Class="WpfSampleApp.Windows.MainWindow"
+﻿<Window x:Class="WpfSampleApp.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -21,6 +21,5 @@
                       MinWidth="150" 
                       VerticalAlignment="Stretch" 
                       HorizontalAlignment="Center" />
-        <controls:LogList Grid.Row="2" Header="Error Messages:" Items="{Binding ErrorMessages}"/> 
-        </Grid>
+    </Grid>
 </Window>
