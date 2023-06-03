@@ -1,8 +1,11 @@
-using EliteJourneyReader.Public.EventMessages;
+using EliteJourneyReader.EventMessages;
 
-namespace EliteJourneyReader.Public.EliteJourneyProvider;
+namespace EliteJourneyReader.EliteJourneyProvider;
 
-public partial class EliteJourneyProvider
+public delegate void JourneyEventDelegate(JourneyEventMessage message, string jsonMessage);
+public delegate void JourneyErrorEventDelegate(string jsonMessage);
+
+internal partial class EliteJourneyProvider
 {
     /// <summary>
     /// Triggered by any in-game event. Contains deserialized message and json value of the message

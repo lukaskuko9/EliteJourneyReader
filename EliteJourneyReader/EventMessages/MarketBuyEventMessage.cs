@@ -1,4 +1,4 @@
-namespace EliteJourneyReader.Public.EventMessages;
+namespace EliteJourneyReader.EventMessages;
 
 public sealed class MarketBuyEventMessage : JourneyEventMessage
 {

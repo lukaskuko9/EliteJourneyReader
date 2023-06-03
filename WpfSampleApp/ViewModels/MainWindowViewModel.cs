@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Automation.Provider;
 using System.Windows.Threading;
-using EliteJourneyReader.Public.EventMessages;
+using EliteJourneyReader.EventMessages;
 using WpfSampleApp.Controls;
 
 namespace WpfSampleApp.ViewModels;

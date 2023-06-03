@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Threading;
 using System.Windows;
 using System.Windows.Input;
-using EliteJourneyReader.Public;
-using EliteJourneyReader.Public.EliteJourneyProvider;
-using EliteJourneyReader.Public.EventMessages;
+using EliteJourneyReader.EliteJourneyProvider;
+using EliteJourneyReader.EventMessages;
 using Microsoft.Extensions.Options;
 using WpfSampleApp.Options;
 using WpfSampleApp.ViewModels;
@@ -18,7 +16,7 @@ namespace WpfSampleApp.Views
     {
         private readonly MainWindowViewModel _viewModel;
         
-        public MainWindow(EliteJourneyProvider eliteJourneyProvider, IOptions<TestOptions> testOptions)
+        public MainWindow(IEliteJourneyProvider eliteJourneyProvider, IOptions<TestOptions> testOptions)
         {
             var testOptions1 = testOptions.Value;
             _viewModel = new MainWindowViewModel(testOptions1.Title);
@@ -37,6 +35,7 @@ namespace WpfSampleApp.Views
                 _viewModel.AddErrorMessage(jsonMessage);
             });
         }
+
         private void EliteJourneyProviderOnAnyEvent(JourneyEventMessage message, string jsonMessage)
         {
             Dispatcher.Invoke(() =>

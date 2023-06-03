@@ -1,56 +1,43 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
+using EliteJourneyReader.EventMessages;
 using EliteJourneyReader.JourneyReader;
-using EliteJourneyReader.Public.EventMessages;
 
 [assembly:InternalsVisibleTo("EliteJourneyReaderTests")]
-namespace EliteJourneyReader.Public.EliteJourneyProvider;
+namespace EliteJourneyReader.EliteJourneyProvider;
 
-public partial class EliteJourneyProvider
+internal partial class EliteJourneyProvider : IEliteJourneyProvider
 {
-    private readonly JourneyFileReader _fileReader;
-
-    public delegate void JourneyEventDelegate(JourneyEventMessage message, string jsonMessage);
-    public delegate void JourneyErrorEventDelegate(string jsonMessage);
+    private readonly IJourneyFileReader _reader;
     
-    internal delegate void CallEventDelegate(JourneyEventMessage? message, string json);
-
-    public EliteJourneyProvider()
+    public EliteJourneyProvider(IJourneyEventProcessor processor, IJourneyFileReader reader)
     {
-        _fileReader = JourneyFileReader.Instance;
-        StartReadingMessages();
+        _reader = reader;
+        processor.OnNewEventProcessed += RaiseProperEvents;
     }
 
-    #region Public
+    #region Implementations
+    
+    public void SetJournalDirectoryPath(Uri uri)
+    {
+        _reader.SetNewJournalDirectoryPath(uri.AbsolutePath);
+    }
     
     public void SetJournalDirectoryPath(string path)
     {
-        _fileReader.SetNewJournalDirectoryPath(path);
+        _reader.SetNewJournalDirectoryPath(path);
     }
 
     public void EnableReading(bool enable)
     {
-        if(enable)
-            StartReadingMessages();
-        else
-            StopReadingMessages();
+        _reader.EnableReading(enable);
     }
     
     #endregion
 
     #region Private
-
-    private void StartReadingMessages()
-    {
-        _fileReader.Register(OnNewEventRead);
-    }
-
-    private void StopReadingMessages()
-    {
-        _fileReader.Unregister();
-    }
-
-    private void OnNewEventRead(JourneyEventMessage? eventMessage, string json)
+    
+    private void RaiseProperEvents(JourneyEventMessage? eventMessage, string json)
     {
         if (eventMessage is null)
         {

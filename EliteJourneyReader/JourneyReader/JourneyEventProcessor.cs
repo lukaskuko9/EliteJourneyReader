@@ -1,40 +1,39 @@
-﻿using System.Runtime.Serialization;
-using EliteJourneyReader.Public.DI;
-using EliteJourneyReader.Public.EventMessages;
+﻿using EliteJourneyReader.DI;
+using EliteJourneyReader.EventMessages;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace EliteJourneyReader.JourneyReader;
 
-internal class JourneyEventProcessor
+public delegate void EventProcessed(JourneyEventMessage? msg, string json);
+public class JourneyEventProcessor : IJourneyEventProcessor
 {
     private DateTimeOffset LastEventTime { get; set; } = DateTimeOffset.MinValue;
     private string _lastJson = string.Empty;
     private readonly Dictionary<string, Type> _configDictionary;
-
-    private readonly JournalReaderOptions _options = new()
+    private readonly JourneyReaderOptions _options;
+    public event EventProcessed? OnNewEventProcessed;
+    public JourneyEventProcessor(IEnumerable<IEventMessage> messageTypes, IOptions<JourneyReaderOptions> options, IJourneyFileReader reader)
     {
-        JsonSerializerSettings = new JsonSerializerSettings()
-        {
-            DateParseHandling = DateParseHandling.DateTimeOffset,
-            DateTimeZoneHandling = DateTimeZoneHandling.Local
-        }
-    };
-
-    public JourneyEventProcessor(IEnumerable<IEventMessage> messageTypes)
-    {
+        _options = options.Value;
+        reader.OnNewEventRegistered += ReaderOnOnNewEventRegistered;
         //build dictionary of expected string literals with their types
         _configDictionary = messageTypes
             .Select(x => (x.EventTypeName, EventType: x.GetType()))
             .ToDictionary(x => x.EventTypeName, x => x.EventType);
     }
 
-    internal void SetJournalReaderOptions(JournalReaderOptions options)
+    private void ReaderOnOnNewEventRegistered(string[] events)
     {
-        _options.JsonSerializerSettings = options.JsonSerializerSettings;
+        foreach (var eventMessage in ProcessMessages(events))
+        {
+            var (msg, json) = eventMessage;
+            OnNewEventProcessed?.Invoke(msg, json);
+        }
     }
-    
-    internal IEnumerable<(JourneyEventMessage?, string)> ProcessMessages(string[] events)
+
+    private IEnumerable<(JourneyEventMessage?, string)> ProcessMessages(string[] events)
     {
         var newMessages = events
             .Select(DeserializeMessage)

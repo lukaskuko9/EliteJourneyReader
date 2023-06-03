@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace EliteJourneyReader.Public.EventMessages;
+namespace EliteJourneyReader.EventMessages;
 
 public class JourneyEventMessage : IEventMessage
 {
