@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using EliteJourneyReader.Public;
+using EliteJourneyReader.Public.EliteJourneyProvider;
 
 namespace EliteJourneyReader.JourneyReader;
 internal class JourneyFileReader
@@ -34,6 +35,7 @@ internal class JourneyFileReader
         FileSystemWatcher = new FileSystemWatcher(JourneyDirectoryPath);
         FileSystemWatcher.EnableRaisingEvents = true;
         FileSystemWatcher.Filter = "*.log";
+        FileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;
         FileSystemWatcher.Created += WatcherOnCreated;
         FileSystemWatcher.Changed += WatcherOnChanged;
     }
@@ -49,17 +51,17 @@ internal class JourneyFileReader
     }
     private void WatcherOnChanged(object sender, FileSystemEventArgs e)
     {
-        var events = ReadLines(e.FullPath).ToArray();
-        foreach (var eventMessage in _processor.ProcessMessages(events))
-        {
-            var (msg, json) = eventMessage;
-            _callEventDelegate?.Invoke(msg, json);
-        }
+        ProcessFile(e.FullPath);
     }
 
     private void WatcherOnCreated(object sender, FileSystemEventArgs e)
     {
-        var events = ReadLines(e.FullPath).ToArray();
+        ProcessFile(e.FullPath);
+    }
+
+    private void ProcessFile(string fullPath)
+    {
+        var events = ReadLines(fullPath).ToArray();
         foreach (var eventMessage in _processor.ProcessMessages(events))
         {
             var (msg, json) = eventMessage;

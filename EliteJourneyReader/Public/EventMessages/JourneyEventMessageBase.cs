@@ -9,7 +9,6 @@ public class JourneyEventMessage : IEventMessage
 
 
     public virtual string EventTypeName { get; } = string.Empty;
-    
 }
 
 public interface IEventMessage

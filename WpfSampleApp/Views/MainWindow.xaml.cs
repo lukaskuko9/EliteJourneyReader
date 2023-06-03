@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 using EliteJourneyReader.Public;
+using EliteJourneyReader.Public.EliteJourneyProvider;
 using EliteJourneyReader.Public.EventMessages;
 using Microsoft.Extensions.Options;
 using WpfSampleApp.Options;
@@ -13,34 +16,45 @@ namespace WpfSampleApp.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly EliteJourneyProvider _eliteJourneyProvider;
-        private readonly TestOptions _testOptions;
-        private readonly MainWindowViewModel viewModel;
+        private readonly MainWindowViewModel _viewModel;
         
         public MainWindow(EliteJourneyProvider eliteJourneyProvider, IOptions<TestOptions> testOptions)
         {
-            _eliteJourneyProvider = eliteJourneyProvider;
-            _testOptions = testOptions.Value;
-            viewModel = new MainWindowViewModel(_testOptions.Title);
+            var testOptions1 = testOptions.Value;
+            _viewModel = new MainWindowViewModel(testOptions1.Title);
             
             InitializeComponent();
 
-            _eliteJourneyProvider.OnAnyEvent += EliteJourneyProviderOnAnyEvent;
-            _eliteJourneyProvider.OnFriendsChange += EliteJourneyProviderOnOnFriendsChange;
-            DataContext = viewModel;
+            eliteJourneyProvider.OnAnyEvent += EliteJourneyProviderOnAnyEvent;
+            eliteJourneyProvider.OnReaderError += EliteJourneyProviderOnReaderError;
+            DataContext = _viewModel;
         }
 
-        private void EliteJourneyProviderOnOnFriendsChange(object? sender, FriendsEventMessage? message)
-        {
-            Console.WriteLine();
-        }
-
-        private void EliteJourneyProviderOnAnyEvent(JourneyEventMessage? message, string jsonMessage)
+        private void EliteJourneyProviderOnReaderError(string jsonMessage)
         {
             Dispatcher.Invoke(() =>
             {
-                viewModel.AddEventMessage(message, jsonMessage);
+                _viewModel.AddErrorMessage(jsonMessage);
             });
+        }
+        private void EliteJourneyProviderOnAnyEvent(JourneyEventMessage message, string jsonMessage)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                _viewModel.AddEventMessage(message, jsonMessage);
+            });
+        }
+        
+        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var str = MyListView.SelectedValue.ToString();
+            if (string.IsNullOrWhiteSpace(str) == false)
+                Clipboard.SetDataObject(str);
         }
     }
 }

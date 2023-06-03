@@ -1,32 +1,20 @@
-﻿using System.ComponentModel;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using EliteJourneyReader.JourneyReader;
 using EliteJourneyReader.Public.EventMessages;
 
 [assembly:InternalsVisibleTo("EliteJourneyReaderTests")]
-namespace EliteJourneyReader.Public;
+namespace EliteJourneyReader.Public.EliteJourneyProvider;
 
-public class EliteJourneyProvider
+public partial class EliteJourneyProvider
 {
     private readonly JourneyFileReader _fileReader;
 
-    public delegate void JourneyEventDelegate(JourneyEventMessage? message, string jsonMessage);
+    public delegate void JourneyEventDelegate(JourneyEventMessage message, string jsonMessage);
+    public delegate void JourneyErrorEventDelegate(string jsonMessage);
     
     internal delegate void CallEventDelegate(JourneyEventMessage? message, string json);
-    
-    public event JourneyEventDelegate? OnAnyEvent;
-   // public event JourneyEventDelegate<ErrorMessage>? OnReaderError;
-    
-   
-#pragma warning disable CS0067
-    public event EventHandler<FriendsEventMessage>? OnFriendsChange;
-    public event EventHandler<LoadGameEventMessage>? OnLoadGame;
-    public event EventHandler<FileHeaderEventMessage>? OnFileHeader;
-    public event EventHandler<MarketBuyEventMessage>? OnMarketBuy;
-    public event EventHandler<MarketSellEventMessage>? OnMarketSell;
-#pragma warning restore CS0067
-    
+
     public EliteJourneyProvider()
     {
         _fileReader = JourneyFileReader.Instance;
@@ -64,11 +52,13 @@ public class EliteJourneyProvider
 
     private void OnNewEventRead(JourneyEventMessage? eventMessage, string json)
     {
-        //even if eventMessage is null due to error, we still can send original json
-        OnAnyEvent?.Invoke(eventMessage, json);
-
         if (eventMessage is null)
+        {
+            OnReaderError?.Invoke(json);
             return;
+        }
+
+        OnAnyEvent?.Invoke(eventMessage, json);
         
         var eventToInvoke = GetEventDelegate(eventMessage);
         eventToInvoke?.DynamicInvoke(this, eventMessage);
@@ -77,7 +67,7 @@ public class EliteJourneyProvider
     private Delegate? GetEventDelegate(JourneyEventMessage eventMessage)
     {
         //if base JourneyEventMessage comes here, we don't have the model for the message,
-        //therefore we don't have event to trigger either
+        //therefore we don't have specific event to trigger either
         if (eventMessage.GetType() == typeof(JourneyEventMessage))
             return null;
         

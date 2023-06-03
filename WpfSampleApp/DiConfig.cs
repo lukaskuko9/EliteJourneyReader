@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using EliteJourneyReader.Public.Extensions;
+﻿using EliteJourneyReader.Public.DI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WpfSampleApp.Options;
@@ -13,6 +12,8 @@ public static class DiConfig
     {
         services.Configure<TestOptions>(config.GetSection(nameof(TestOptions)));
         services.AddTransient(typeof(MainWindow));
+        
         services.ConfigureJourneyReader();
+        
     }
 }

@@ -7,18 +7,18 @@ namespace WpfSampleApp.Controls;
 
 public record LogMessage(string Event, DateTimeOffset Time, string Json);
 public record LogErrorMessage(Exception Exception, DateTimeOffset Time, string Json);
-public partial class LogList : UserControl
+public partial class MessageLogList : UserControl
 {
     public static readonly DependencyProperty ItemsDependency =
         DependencyProperty.Register(nameof(Items), 
             typeof(ObservableCollection<LogMessage>), 
-            typeof(LogList),
+            typeof(MessageLogList),
             new FrameworkPropertyMetadata(null)
             );    
     public static readonly DependencyProperty HeaderDependency =
         DependencyProperty.Register(nameof(Header), 
             typeof(string), 
-            typeof(LogList),
+            typeof(MessageLogList),
             new FrameworkPropertyMetadata(null)
             );
 
@@ -33,9 +33,10 @@ public partial class LogList : UserControl
         set => SetValue(HeaderDependency, value);
     }
 
-    public LogList()
+    public MessageLogList()
     {
         InitializeComponent();
         DockPanel.DataContext = this;
     }
 }
+
