@@ -54,5 +54,26 @@ public interface IEliteJourneyProvider
     /// </summary>
     public event EventHandler<MarketSellEventMessage>? OnMarketSell;
 
+    /// <summary>
+    /// Triggered when zooming in on a signal using the FSS scanner
+    /// </summary>
+    public event EventHandler<FssSignalDiscoveredEventMessage>? OnFssSignalDiscovered;
+    
+    /// <summary>
+    /// Triggered when scooping fuel from a star
+    /// </summary>
+    public event EventHandler<FuelScoopEventMessage>? OnFuelScoop;
+    
+    /// <summary>
+    /// Triggered when scooping fuel from a star
+    /// </summary>
+    public event EventHandler<FsdJumpEventMessage>? OnFsdJump;
+    
+    /// <summary>
+    /// Triggered basic or detailed discovery scan of a star, planet or moon.
+    /// This is also generated when scanning a navigation beacon in a populated system, to record info about all the bodies in the system
+    /// </summary>
+    public event EventHandler<ScanEventMessage>? OnScan;
+    
     #endregion
 }
