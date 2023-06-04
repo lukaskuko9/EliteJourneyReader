@@ -54,5 +54,10 @@ public interface IEliteJourneyProvider
     /// </summary>
     public event EventHandler<MarketSellEventMessage>? OnMarketSell;
 
+    /// <summary>
+    /// Triggered when zooming in on a signal using the FSS scanner
+    /// </summary>
+    public event EventHandler<FssSignalDiscoveredEventMessage>? OnFssSignalDiscovered;
+    
     #endregion
 }

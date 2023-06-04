@@ -44,6 +44,11 @@ public partial class EliteJourneyProvider
     /// <summary>
     /// Triggered when selling goods in the market
     /// </summary>
-    public event EventHandler<MarketSellEventMessage>? OnMarketSell;
+    public event EventHandler<MarketSellEventMessage>? OnMarketSell;    
+    
+    /// <summary>
+    /// Triggered when zooming in on a signal using the FSS scanner
+    /// </summary>
+    public event EventHandler<FssSignalDiscoveredEventMessage>? OnFssSignalDiscovered;
 #pragma warning restore CS0067   
 }
