@@ -17,14 +17,14 @@ public class JourneyEventProcessor : IJourneyEventProcessor
     public JourneyEventProcessor(IEnumerable<IEventMessage> messageTypes, IOptions<JourneyReaderOptions> options, IJourneyFileReader reader)
     {
         _options = options.Value;
-        reader.OnNewEventRegistered += ReaderOnOnNewEventRegistered;
+        reader.OnNewEventRegistered += ReaderOnNewEventRegistered;
         //build dictionary of expected string literals with their types
         _configDictionary = messageTypes
             .Select(x => (x.EventTypeName, EventType: x.GetType()))
             .ToDictionary(x => x.EventTypeName, x => x.EventType);
     }
 
-    private void ReaderOnOnNewEventRegistered(string[] events)
+    private void ReaderOnNewEventRegistered(string[] events)
     {
         foreach (var eventMessage in ProcessMessages(events))
         {

@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJourneyReader", "Elite
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfSampleApp", "WpfSampleApp\WpfSampleApp.csproj", "{DCE1D809-946A-4D5B-87C5-858C2417D263}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJourneyReaderTests", "EliteJourneyReaderTests\EliteJourneyReaderTests.csproj", "{35797D47-46DD-40D8-88F1-7BC85008F063}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{DCE1D809-946A-4D5B-87C5-858C2417D263}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCE1D809-946A-4D5B-87C5-858C2417D263}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCE1D809-946A-4D5B-87C5-858C2417D263}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35797D47-46DD-40D8-88F1-7BC85008F063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35797D47-46DD-40D8-88F1-7BC85008F063}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35797D47-46DD-40D8-88F1-7BC85008F063}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35797D47-46DD-40D8-88F1-7BC85008F063}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
