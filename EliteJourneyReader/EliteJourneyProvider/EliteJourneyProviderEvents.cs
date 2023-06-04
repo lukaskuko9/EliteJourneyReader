@@ -59,6 +59,12 @@ public partial class EliteJourneyProvider
     /// <summary>
     /// Triggered when scooping fuel from a star
     /// </summary>
-    public event EventHandler<FsdJumpEventMessage>? OnFsdJump;
+    public event EventHandler<FsdJumpEventMessage>? OnFsdJump;    
+    
+    /// <summary>
+    /// Triggered basic or detailed discovery scan of a star, planet or moon.
+    /// This is also generated when scanning a navigation beacon in a populated system, to record info about all the bodies in the system
+    /// </summary>
+    public event EventHandler<ScanEventMessage>? OnScan;
 #pragma warning restore CS0067   
 }
