@@ -59,5 +59,10 @@ public interface IEliteJourneyProvider
     /// </summary>
     public event EventHandler<FssSignalDiscoveredEventMessage>? OnFssSignalDiscovered;
     
+    /// <summary>
+    /// Triggered when scooping fuel from a star
+    /// </summary>
+    public event EventHandler<FuelScoopEventMessage>? OnFuelScoop;
+    
     #endregion
 }

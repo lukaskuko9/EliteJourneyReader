@@ -50,5 +50,10 @@ public partial class EliteJourneyProvider
     /// Triggered when zooming in on a signal using the FSS scanner
     /// </summary>
     public event EventHandler<FssSignalDiscoveredEventMessage>? OnFssSignalDiscovered;
+    
+    /// <summary>
+    /// Triggered when scooping fuel from a star
+    /// </summary>
+    public event EventHandler<FuelScoopEventMessage>? OnFuelScoop;
 #pragma warning restore CS0067   
 }
