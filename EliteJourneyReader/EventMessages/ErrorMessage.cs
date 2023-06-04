@@ -1,6 +1,6 @@
-﻿namespace EliteJourneyReader.Public.EventMessages;
+﻿namespace EliteJourneyReader.EventMessages;
 
-public class ErrorMessage : JourneyEventMessage
+public class ErrorMessage
 {
     public readonly string Json;
     public readonly Exception Exception;
@@ -10,4 +10,6 @@ public class ErrorMessage : JourneyEventMessage
         Json = json;
         Exception = exception;
     }
+
+   // public override string EventTypeName => string.Empty;
 }

@@ -1,4 +1,4 @@
-﻿<Window x:Class="WpfSampleApp.Windows.MainWindow"
+﻿<Window x:Class="WpfSampleApp.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,13 +6,31 @@
         xmlns:controls="clr-namespace:WpfSampleApp.Controls"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="450" Width="800">
+    <Window.CommandBindings>
+        <CommandBinding
+            Command="ApplicationCommands.Copy"
+            CanExecute="CommandBinding_CanExecute"
+            Executed="CommandBinding_Executed"/>
+    </Window.CommandBindings>
+
+
+    <Window.Resources>
+        <ContextMenu x:Key="MyContextMenu">
+            <MenuItem Header="Copy" Command="ApplicationCommands.Copy"/>
+        </ContextMenu>
+
+        <Style x:Key="MyItemContainerStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="ContextMenu" Value="{StaticResource MyContextMenu}" />
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <controls:LogList Header="InGame Messages:" Items="{Binding InGameMessages}"/> 
+        <controls:MessageLogList Header="InGame Messages:" Items="{Binding InGameMessages}"/> 
         <GridSplitter Grid.Row="1" Margin="0,5,0,5" ResizeDirection="Rows"
                       BorderBrush="AliceBlue" 
                       BorderThickness="2"
@@ -21,6 +39,8 @@
                       MinWidth="150" 
                       VerticalAlignment="Stretch" 
                       HorizontalAlignment="Center" />
-        <controls:LogList Grid.Row="2" Header="Error Messages:" Items="{Binding ErrorMessages}"/> 
-        </Grid>
+        <ListView Grid.Row="2" x:Name="MyListView" ItemsSource="{Binding ErrorMessages}" ItemContainerStyle="{StaticResource MyItemContainerStyle}">
+        </ListView>
+
+    </Grid>
 </Window>
