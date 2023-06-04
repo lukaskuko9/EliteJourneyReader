@@ -1,9 +1,7 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using EliteJourneyReader.EventMessages;
 using EliteJourneyReader.JourneyReader;
 
-[assembly:InternalsVisibleTo("EliteJourneyReaderTests")]
 namespace EliteJourneyReader.EliteJourneyProvider;
 
 internal partial class EliteJourneyProvider : IEliteJourneyProvider
