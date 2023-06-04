@@ -5,7 +5,7 @@ namespace EliteJourneyReader.EliteJourneyProvider;
 public delegate void JourneyEventDelegate(JourneyEventMessage message, string jsonMessage);
 public delegate void JourneyErrorEventDelegate(string jsonMessage);
 
-internal partial class EliteJourneyProvider
+public partial class EliteJourneyProvider
 {
     /// <summary>
     /// Triggered by any in-game event. Contains deserialized message and json value of the message

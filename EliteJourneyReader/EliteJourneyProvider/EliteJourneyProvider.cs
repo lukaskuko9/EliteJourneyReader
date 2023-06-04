@@ -4,7 +4,7 @@ using EliteJourneyReader.JourneyReader;
 
 namespace EliteJourneyReader.EliteJourneyProvider;
 
-internal partial class EliteJourneyProvider : IEliteJourneyProvider
+public partial class EliteJourneyProvider : IEliteJourneyProvider
 {
     private readonly IJourneyFileReader _reader;
     
@@ -51,18 +51,14 @@ internal partial class EliteJourneyProvider : IEliteJourneyProvider
 
     private Delegate? GetEventDelegate(JourneyEventMessage eventMessage)
     {
-        //if base JourneyEventMessage comes here, we don't have the model for the message,
-        //therefore we don't have specific event to trigger either
-        if (eventMessage.GetType() == typeof(JourneyEventMessage))
-            return null;
-        
         //get and later invoke proper event dynamically using reflection
         //because there will be ton of them and I am lazy to do the mapping everytime
         //if this causes performance issues, optimize or do it manually!
+        //if we dont find delegate here,it means that type of eventMessage is base JourneyEventMessage -> meaning we don't have types for this message and there is no event to trigger
         var eventDelegate = GetType()
             .GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
-            .First(x => x.FieldType.GenericTypeArguments.Contains(eventMessage.GetType()));
-        var eventToInvoke = (Delegate?)eventDelegate.GetValue(this);
+            .FirstOrDefault(x => x.FieldType.GenericTypeArguments.Contains(eventMessage.GetType()));
+        var eventToInvoke = (Delegate?)eventDelegate?.GetValue(this);
         return eventToInvoke;
     }
 

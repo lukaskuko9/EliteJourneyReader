@@ -1,7 +1,7 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5ffddcf3_002D61f9_002D40ea_002D89c6_002D8ee7256753d5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::AD4F5BBF-3BF0-4952-BE3C-5979C891D876::net6.0::EliteJourneyReaderTests.AddEventTests.Test1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::35797D47-46DD-40D8-88F1-7BC85008F063::net7.0::EliteJourneyReaderTests.EliteJourneyProviderTests.OnAnyEventShouldBeRaisedOnAnyMessageProcessed&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>
