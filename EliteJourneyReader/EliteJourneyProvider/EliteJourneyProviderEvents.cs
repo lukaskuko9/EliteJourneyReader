@@ -54,6 +54,11 @@ public partial class EliteJourneyProvider
     /// <summary>
     /// Triggered when scooping fuel from a star
     /// </summary>
-    public event EventHandler<FuelScoopEventMessage>? OnFuelScoop;
+    public event EventHandler<FuelScoopEventMessage>? OnFuelScoop;    
+    
+    /// <summary>
+    /// Triggered when scooping fuel from a star
+    /// </summary>
+    public event EventHandler<FsdJumpEventMessage>? OnFsdJump;
 #pragma warning restore CS0067   
 }
