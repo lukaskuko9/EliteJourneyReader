@@ -1,4 +1,4 @@
-﻿namespace EliteJourneyReader.Public.EventMessages;
+﻿namespace EliteJourneyReader.EventMessages;
 
 public sealed class LoadGameEventMessage : JourneyEventMessage
 {
@@ -10,8 +10,10 @@ public sealed class LoadGameEventMessage : JourneyEventMessage
     public string ShipName { get; set; } = string.Empty;
     public string ShipIdent { get; set; } = string.Empty;
     public decimal FuelLevel { get; set; }
-    public int FuelCapacity { get; set; }
+    public decimal FuelCapacity { get; set; }
     public string GameMode { get; set; } = string.Empty;
     public string Credits { get; set; } = string.Empty;
     public string Loan { get; set; } = string.Empty;
+
+    public override string EventTypeName => "LoadGame";
 }

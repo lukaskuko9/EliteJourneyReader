@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WpfSampleApp.Windows;
+using WpfSampleApp.Views;
 
 namespace WpfSampleApp
 {

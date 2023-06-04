@@ -1,55 +1,59 @@
 ﻿using System;
 using System.Windows;
-using EliteJourneyReader.Public;
-using EliteJourneyReader.Public.EventMessages;
+using System.Windows.Input;
+using EliteJourneyReader.EliteJourneyProvider;
+using EliteJourneyReader.EventMessages;
 using Microsoft.Extensions.Options;
 using WpfSampleApp.Options;
 using WpfSampleApp.ViewModels;
 
-namespace WpfSampleApp.Windows
+namespace WpfSampleApp.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly EliteJourneyReader.Public.EliteJourneyProvider _eliteJourneyProvider;
-        private readonly TestOptions _testOptions;
-        private readonly MainWindowViewModel viewModel;
+        private readonly MainWindowViewModel _viewModel;
         
-        public MainWindow(EliteJourneyReader.Public.EliteJourneyProvider eliteJourneyProvider, IOptions<TestOptions> testOptions)
+        public MainWindow(IEliteJourneyProvider eliteJourneyProvider, IOptions<TestOptions> testOptions)
         {
-            _eliteJourneyProvider = eliteJourneyProvider;
-            _testOptions = testOptions.Value;
-            viewModel = new MainWindowViewModel(_testOptions.Title);
+            var testOptions1 = testOptions.Value;
+            _viewModel = new MainWindowViewModel(testOptions1.Title);
             
             InitializeComponent();
 
-            _eliteJourneyProvider.OnAnyEvent += EliteJourneyProviderOnAnyEvent;
-            _eliteJourneyProvider.OnFriendsChange += EliteJourneyProviderOnOnFriendsChange;
-            _eliteJourneyProvider.OnReaderError += EliteJourneyProviderOnOnProviderError;
-            DataContext = viewModel;
+            eliteJourneyProvider.OnAnyEvent += EliteJourneyProviderOnAnyEvent;
+            eliteJourneyProvider.OnReaderError += EliteJourneyProviderOnReaderError;
+            DataContext = _viewModel;
         }
 
-        private void EliteJourneyProviderOnOnFriendsChange(FriendsEventMessage message)
-        {
-            Console.WriteLine();
-        }
-
-        private void EliteJourneyProviderOnOnProviderError(ErrorMessage message)
+        private void EliteJourneyProviderOnReaderError(string jsonMessage)
         {
             Dispatcher.Invoke(() =>
             {
-                viewModel.AddErrorMessage(message);
+                _viewModel.AddErrorMessage(jsonMessage);
             });
         }
 
-        private void EliteJourneyProviderOnAnyEvent(JourneyEventMessage? message, string jsonMessage)
+        private void EliteJourneyProviderOnAnyEvent(JourneyEventMessage message, string jsonMessage)
         {
             Dispatcher.Invoke(() =>
             {
-                viewModel.AddEventMessage(message, jsonMessage);
+                _viewModel.AddEventMessage(message, jsonMessage);
             });
+        }
+        
+        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var str = MyListView.SelectedValue.ToString();
+            if (string.IsNullOrWhiteSpace(str) == false)
+                Clipboard.SetDataObject(str);
         }
     }
 }

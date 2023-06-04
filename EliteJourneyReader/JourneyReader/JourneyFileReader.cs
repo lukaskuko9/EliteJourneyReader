@@ -1,16 +1,18 @@
 ﻿using System.Text;
+using EliteJourneyReader.DI;
+using Microsoft.Extensions.Options;
 
-namespace EliteJourneyReader.Public.JourneyReader;
-public class JourneyFileReader
+namespace EliteJourneyReader.JourneyReader;
+internal class JourneyFileReader : IJourneyFileReader
 {
-    private readonly JourneyEventProcessor _processor;
-    internal string JourneyDirectoryPath { get; set; } = string.Empty;
-    
+    public event JourneyEventDelegate OnNewEventRegistered = default!;
+
+    private string JourneyDirectoryPath { get; set; }
     private string DefaultDirectoryPath => Environment.ExpandEnvironmentVariables(RawDefaultDirectoryPath);
     private string RawDefaultDirectoryPath = "%userprofile%\\Saved Games\\Frontier Developments\\Elite Dangerous\\";
     private FileSystemWatcher FileSystemWatcher { get; }
 
-    internal void SetNewJournalDirectoryPath(string path)
+    public void SetNewJournalDirectoryPath(string path)
     {
         if (Directory.Exists(path) == false)
             throw new DirectoryNotFoundException($"Path provided to journal directory does not exist! " +
@@ -20,39 +22,31 @@ public class JourneyFileReader
         FileSystemWatcher.Path = path;
     }
 
-    public JourneyFileReader(JourneyEventProcessor processor)
+    public JourneyFileReader(IOptions<JourneyReaderOptions> options)
     {
         JourneyDirectoryPath = DefaultDirectoryPath;
-        _processor = processor;
         FileSystemWatcher = new FileSystemWatcher(JourneyDirectoryPath);
-        FileSystemWatcher.EnableRaisingEvents = true;
+        FileSystemWatcher.EnableRaisingEvents = options.Value.AutoStartProcessingMessages;
         FileSystemWatcher.Filter = "*.log";
+        FileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;
         FileSystemWatcher.Created += WatcherOnCreated;
         FileSystemWatcher.Changed += WatcherOnChanged;
     }
-    private EliteJourneyProvider.CallEventDelegate? _callEventDelegate;
-    internal void Register(EliteJourneyProvider.CallEventDelegate callEventDelegate)
-    {
-        _callEventDelegate = callEventDelegate;
-    }
+
     private void WatcherOnChanged(object sender, FileSystemEventArgs e)
     {
-        var events = ReadLines(e.FullPath).ToArray();
-        foreach (var eventMessage in _processor.ProcessMessages(events))
-        {
-            var (msg, json) = eventMessage;
-            _callEventDelegate?.Invoke(msg, json);
-        }
+        ProcessFile(e.FullPath);
     }
 
     private void WatcherOnCreated(object sender, FileSystemEventArgs e)
     {
-        var events = ReadLines(e.FullPath).ToArray();
-        foreach (var eventMessage in _processor.ProcessMessages(events))
-        {
-            var (msg, json) = eventMessage;
-            _callEventDelegate?.Invoke(msg, json);
-        }
+        ProcessFile(e.FullPath);
+    }
+
+    private void ProcessFile(string fullPath)
+    {
+        var events = ReadLines(fullPath).ToArray();
+        OnNewEventRegistered.Invoke(events);
     }
 
     private IEnumerable<string> ReadLines(string path)
@@ -65,5 +59,10 @@ public class JourneyFileReader
             if (s is not null)
                 yield return s;
         }
+    }
+
+    public void EnableReading(bool enable)
+    {
+        FileSystemWatcher.EnableRaisingEvents = enable;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace EliteJourneyReader.Public.EventMessages;
+namespace EliteJourneyReader.EventMessages;
 
 public sealed class FriendsEventMessage : JourneyEventMessage
 {
@@ -9,4 +9,6 @@ public sealed class FriendsEventMessage : JourneyEventMessage
     
     [JsonProperty("name")]
     public string FriendName { get; set; } = string.Empty;
+
+    public override string EventTypeName => "Friends";
 }

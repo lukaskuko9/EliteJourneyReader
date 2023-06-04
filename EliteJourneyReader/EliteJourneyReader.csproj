@@ -11,11 +11,23 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <LangVersion>10</LangVersion>
+        <PackageReleaseNotes>
+            1.0.0 Added support for new message types
+                  Added possibility to set:
+                    * Json serializer settings when deserializing message
+                    * Auto start processing messages on startup (default is true)
+                    * Start or stop reading file changes (enables or disables reading / processing of new messages)
+                    * Directory path (default is the same as default Journal files location)
+                  Internal code changes
+            0.1.8 Added option to change journal directory
+        </PackageReleaseNotes>
         <PackageProjectUrl>https://github.com/lukaskuko9/EliteJourneyReader</PackageProjectUrl>
     </PropertyGroup>
     <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
       <None Include="README.md" Pack="true" PackagePath="\" />
       <None Include="LICENSE" Pack="true" PackagePath="\" />
