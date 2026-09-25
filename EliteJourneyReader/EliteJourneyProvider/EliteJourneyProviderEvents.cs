@@ -1,4 +1,5 @@
 using EliteJourneyReader.EventMessages;
+using EliteJourneyReader.EventMessages.ColonisationEvents;
 using EliteJourneyReader.EventMessages.DockingEvents;
 
 namespace EliteJourneyReader.EliteJourneyProvider;
@@ -98,5 +99,17 @@ public partial class EliteJourneyProvider
     /// Trigggered when viewing the commodity market at a station
     /// </summary>
     public event EventHandler<MarketEventMessage>? OnMarket;
+
+    /// <summary>
+    /// Trigggered every ~15 seconds while docked at a colonisation construction depot
+    /// The behavior on these is weird, I think that these events are batched and all written to the file
+    /// at the same time as the next event, usually either ColonisationContribution or Undocked
+    /// </summary>
+    public event EventHandler<ColonisationConstructionDepotEventMessage>? OnColonisationConstructionDepot;
+
+    /// <summary>
+    /// Trigggered after contributing commodities to a colonisation construction depot
+    /// </summary>
+    public event EventHandler<ColonisationContributionEventMessage>? OnColonisationContribution;
 #pragma warning restore CS0067   
 }
