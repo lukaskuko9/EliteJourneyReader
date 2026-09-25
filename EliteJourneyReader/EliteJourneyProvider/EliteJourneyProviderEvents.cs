@@ -1,4 +1,5 @@
 using EliteJourneyReader.EventMessages;
+using EliteJourneyReader.EventMessages.DockingEvents;
 
 namespace EliteJourneyReader.EliteJourneyProvider;
 
@@ -66,5 +67,31 @@ public partial class EliteJourneyProvider
     /// This is also generated when scanning a navigation beacon in a populated system, to record info about all the bodies in the system
     /// </summary>
     public event EventHandler<ScanEventMessage>? OnScan;
+
+    /// <summary>
+    /// Trigggered when undocking from an outpost, station, fleet carrier, etc
+    /// Check if triggered when launch slv
+    /// </summary>
+    public event EventHandler<UndockedEventMessage>? OnUndocked;
+
+    /// <summary>
+    /// Trigggered when requesting docking permission from an outpost, station, fleet carrier, etc
+    /// </summary>
+    public event EventHandler<DockingRequestedEventMessage>? OnDockingRequested;
+
+    /// <summary>
+    /// Trigggered when a docking request has been accepted
+    /// </summary>
+    public event EventHandler<DockingGrantedEventMessage>? OnDockingGranted;
+
+    /// <summary>
+    /// Trigggered when a docking request has been denied
+    /// </summary>
+    public event EventHandler<DockingDeniedEventMessage>? OnDockingDenied;
+
+    /// <summary>
+    /// Trigggered when docking at a landing pad
+    /// </summary>
+    public event EventHandler<DockedEventMessage>? OnDocked;
 #pragma warning restore CS0067   
 }
