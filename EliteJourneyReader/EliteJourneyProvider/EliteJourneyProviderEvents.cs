@@ -93,5 +93,10 @@ public partial class EliteJourneyProvider
     /// Trigggered when docking at a landing pad
     /// </summary>
     public event EventHandler<DockedEventMessage>? OnDocked;
+
+    /// <summary>
+    /// Trigggered when viewing the commodity market at a station
+    /// </summary>
+    public event EventHandler<MarketEventMessage>? OnMarket;
 #pragma warning restore CS0067   
 }
