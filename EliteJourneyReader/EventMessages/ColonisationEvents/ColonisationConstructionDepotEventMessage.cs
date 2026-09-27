@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EliteJourneyReader.EventMessages.SubTypes;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,7 @@ namespace EliteJourneyReader.EventMessages.ColonisationEvents
         public decimal ConstructionProgress { get; set; }
         public bool ConstructionComplete { get; set; }
         public bool ConstructionFailed { get; set; }
-        public List<Dictionary<string,string>> ResourcesRequired { get; set; } = new List<Dictionary<string,string>>();
-        // Schema is [ { "Name":"$commodity_name", "Name_Localised":"Commodity", "RequiredAmount":123, "ProvidedAmount":456, "Payment":789 }, etc]
-        // This implementation is not ideal as you will have to cast the numbers from string to int
+        public List<ColonisationConstructionDepotCommodity> ResourcesRequired { get; set; } = new List<ColonisationConstructionDepotCommodity>();
 
         public override string EventTypeName => "ColonisationConstructionDepot";
     }
